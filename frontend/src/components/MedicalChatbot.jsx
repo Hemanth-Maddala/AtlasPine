@@ -15,6 +15,9 @@ export default function MedicalChatbot() {
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
 
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
@@ -41,7 +44,7 @@ export default function MedicalChatbot() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/medical', {
+      const response = await fetch(`${API}/api/medical`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json' },

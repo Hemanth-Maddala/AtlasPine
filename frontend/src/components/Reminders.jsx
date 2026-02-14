@@ -10,6 +10,8 @@ export default function Reminders() {
   const [remindAt, setRemindAt] = React.useState('')
   const [now, setNow] = React.useState(Date.now())
 
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
   React.useEffect(() => {
     const interval = setInterval(() => {
       setNow(Date.now())
@@ -23,7 +25,7 @@ export default function Reminders() {
 
   React.useEffect(() => {
     if (!token) return
-    fetch('/api/reminders', {
+    fetch(`${API}/api/reminders`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -34,7 +36,7 @@ export default function Reminders() {
   async function add() {
     if (!token) return
     try {
-      const response = await fetch('/api/reminders', {
+      const response = await fetch(`${API}/api/reminders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +58,7 @@ export default function Reminders() {
   async function remove(id) {
     if (!token) return
     try {
-      await fetch(`/api/reminders/${id}`, {
+      await fetch(`${API}/api/reminders/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       })

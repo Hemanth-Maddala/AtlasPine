@@ -13,6 +13,9 @@ export default function PdfQA() {
   const [isSummarizing, setIsSummarizing] = useState(false);
   const [conversation, setConversation] = useState([]);
 
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+
   // Step 1️⃣: Summarize PDF
   const handleSummarize = async () => {
     if (!pdfFile) return toast.error("Please select a PDF first!");
@@ -38,7 +41,7 @@ export default function PdfQA() {
       console.log("Uploading PDF for summarization:", formData.get("pdf").name);
       console.log("Using token:", token);
 
-      const res = await fetch("http://localhost:5000/api/summarize", {
+      const res = await fetch(`${API}/api/summarize`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

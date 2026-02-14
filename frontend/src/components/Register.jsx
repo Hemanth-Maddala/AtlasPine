@@ -4,6 +4,7 @@ import { toast } from "react-toastify"
 
 export default function Register({ onPageChange, onLogin }) {
   const [loading, setLoading] = useState(false)
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   async function onSubmit(e) {
     e.preventDefault()
@@ -13,7 +14,7 @@ export default function Register({ onPageChange, onLogin }) {
     const form = new FormData(e.currentTarget)
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch(`${API}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

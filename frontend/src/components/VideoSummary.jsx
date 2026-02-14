@@ -11,6 +11,8 @@ export default function VideoSummary() {
   const summaryRef = useRef(null)
   const token = localStorage.getItem('token');
 
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
   const handleSummarize = async () => {
     if (!videoUrl.trim()) {
       toast.warning('Please paste a valid video URL to summarize.', {
@@ -37,7 +39,7 @@ export default function VideoSummary() {
     })
 
     try {
-      const response = await fetch('http://localhost:5000/api/summarize_video', {
+      const response = await fetch(`${API}/api/summarize_video`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ url: videoUrl })

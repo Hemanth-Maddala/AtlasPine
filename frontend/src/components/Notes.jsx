@@ -12,12 +12,13 @@ export default function Notes() {
   const [editingId, setEditingId] = React.useState('')
   const [editTitle, setEditTitle] = React.useState('')
   const [editContent, setEditContent] = React.useState('')
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
   
   const token = localStorage.getItem('token')
   
   React.useEffect(() => {
     if (!token) return
-    fetch('/api/notes', {
+    fetch(`${API}/api/notes`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => res.json())
@@ -28,7 +29,7 @@ export default function Notes() {
   async function add() {
     if (!token) return
     try {
-      const response = await fetch('/api/notes', {
+      const response = await fetch(`${API}/api/notes`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ export default function Notes() {
   async function remove(id) {
     if (!token) return
     try {
-      await fetch(`/api/notes/${id}`, {
+      await fetch(`${API}/api/notes/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -63,7 +64,7 @@ export default function Notes() {
   async function saveEdit() {
     if (!token) return
     try {
-      const response = await fetch(`/api/notes/${editingId}`, {
+      const response = await fetch(`${API}/api/notes/${editingId}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

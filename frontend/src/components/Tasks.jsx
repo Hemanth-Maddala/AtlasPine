@@ -9,10 +9,11 @@ export default function Tasks() {
   const [status, setStatus] = React.useState('todo')
 
   const token = localStorage.getItem('token')
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   React.useEffect(() => {
     if (!token) return
-    fetch('/api/tasks', {
+    fetch(`${API}/api/tasks`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -23,7 +24,7 @@ export default function Tasks() {
   async function add() {
     if (!token) return
     try {
-      const response = await fetch('/api/tasks', {
+      const response = await fetch(`${API}/api/tasks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export default function Tasks() {
   async function remove(id) {
     if (!token) return
     try {
-      await fetch(`/api/tasks/${id}`, {
+      await fetch(`${API}/api/tasks/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -58,7 +59,7 @@ export default function Tasks() {
   async function updateStatus(id, newStatus) {
     if (!token) return
     try {
-      const response = await fetch(`/api/tasks/${id}`, {
+      const response = await fetch(`${API}/api/tasks/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
