@@ -1,0 +1,22 @@
+from flask import Flask, jsonify
+from flask_cors import CORS
+
+from medical import medical_blueprint
+from pdf import pdf_blueprint
+from video import video_blueprint
+
+app = Flask(__name__)
+CORS(app)
+
+# Register routes with prefixes
+app.register_blueprint(pdf_blueprint, url_prefix="/api/pdf")
+app.register_blueprint(medical_blueprint, url_prefix="/api/medical")
+app.register_blueprint(video_blueprint, url_prefix="/api")
+
+@app.route("/api/health")
+def health():
+    return jsonify({"ok": True, "service": "unified-flask", "timestamp": "running"})
+
+if __name__ == "__main__":
+    print("🚀 Unified Flask server running on http://localhost:8000")
+    app.run(host="0.0.0.0", port=8000, debug=True)

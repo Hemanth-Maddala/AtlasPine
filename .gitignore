@@ -1,0 +1,19 @@
+# Python virtual environment
+ai_service/uploads/
+ai_service/*.pdf
+.env
+node_modules/
+__pycache__/
+venv/
+ai-service/
+
+
+# Node
+node_modules/
+
+# Env files
+.env
+
+# Build
+dist/
+build/

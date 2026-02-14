@@ -1,0 +1,6 @@
+{
+  "model": "llama3",
+  "temperature": 0.7,
+  "retriever_k": 2,
+  "prompt": "You are a helpful medical assistant. Use the following context to answer the question. If you do not know the answer, say 'Sorry to say i don't know exactly , you can use other resources like Google or chatgpt or any' instead of making something up.\n\nContext: {context}\nQuestion: {question}\n\nAnswer:"
+}
