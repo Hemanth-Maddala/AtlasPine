@@ -53,3 +53,10 @@ if reimder sent is false , make sure you provide the border of that respective r
   Langchain
 # model 
 Using the Lamma2 model
+
+
+# DEPLOYMENT
+https://atlas-pine.vercel.app/    => frontend in vercel
+https://atlaspine-backend.onrender.com     => backend in render
+1. VITE_API_URL = https://atlaspine-backend.onrender.com     => this is the environment variable given to vercel so in fetch in frontend we kept  "const API = import.meta.env.VITE_API_URL"  so fetch requests in frontend vercel will triggers VITE_API_URL in render 
+2. in VITE the environment variable should be start with "VITE"

@@ -1,26 +1,30 @@
 import os
-from flask import Flask, request, jsonify,Blueprint
+from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA, LLMChain
 from langchain.prompts import PromptTemplate
-from langchain_community.chat_models import ChatOllama
-from langchain.document_loaders import PyMuPDFLoader
+# --- CHANGED: Import Gemini instead of Ollama ---
+from langchain_google_genai import ChatGoogleGenerativeAI 
+from langchain_community.document_loaders import PyMuPDFLoader
+from dotenv import load_dotenv
 
 pdf_blueprint = Blueprint('pdf_blueprint', __name__)
 
 # -----------------------------------
-# Flask app setup
-# -----------------------------------
-# app = Flask(__name__)
-# CORS(app)  # ✅ Allow requests from Node/React
-
-# -----------------------------------
 # Global variables
 # -----------------------------------
-llm = ChatOllama(model="llama3", temperature=0.7)
+# --- CHANGED: LLM Setup ---
+load_dotenv()
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+llm = ChatGoogleGenerativeAI(
+    model="gemini-flash-lite-latest", 
+    google_api_key=GEMINI_API_KEY,
+    temperature=0.7
+)
+
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 stored_chunks = None  # We'll reuse this between summarize and ask
 
@@ -48,7 +52,8 @@ def summarize_pdf(file_path):
     )
 
     summary_chain = LLMChain(llm=llm, prompt=summary_prompt)
-    summary = summary_chain.run({"text": pdf_text})
+    # Using invoke instead of run (recommended for newer LangChain versions)
+    summary = summary_chain.invoke({"text": pdf_text})["text"]
     return summary, chunks
 
 def answer_question(chunks, question):
@@ -73,13 +78,12 @@ Answer:
         chain_type_kwargs={"prompt": prompt}
     )
 
-    return qa_chain.run(question)
+    return qa_chain.invoke(question)["result"]
 
 # -----------------------------------
 # ROUTE: /summarize
 # -----------------------------------
 @pdf_blueprint.route("/summarize", methods=["POST"])
-# @app.route("/summarize", methods=["POST"])
 def summarize_route():
     global stored_chunks
     if "pdf" not in request.files:
@@ -100,7 +104,6 @@ def summarize_route():
 # ROUTE: /ask
 # -----------------------------------
 @pdf_blueprint.route("/ask", methods=["POST"])
-# @app.route("/ask", methods=["POST"])
 def ask_route():
     global stored_chunks
     data = request.get_json()
@@ -115,9 +118,3 @@ def ask_route():
 
     answer = answer_question(stored_chunks, question)
     return jsonify({"answer": answer})
-
-# -----------------------------------
-# Run the Flask server
-# -----------------------------------
-# if __name__ == "__main__":
-#     app.run(port=8000, debug=True)

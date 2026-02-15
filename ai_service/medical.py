@@ -1,60 +1,58 @@
 import json
+import os
+from dotenv import load_dotenv
+from flask import request, jsonify, Blueprint
+
+# Modern LangChain imports
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from langchain_community.chat_models import ChatOllama
+from langchain_google_genai import ChatGoogleGenerativeAI 
 from langchain_pinecone import PineconeVectorStore
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings 
 from pinecone import Pinecone
-from dotenv import load_dotenv
-import os
-from flask import Flask, request, jsonify,Blueprint
-from flask_cors import CORS
 
-
+# 1. Initialize Blueprint
 medical_blueprint = Blueprint('medical_blueprint', __name__)
 
-# -------------------------------
-# 1. Load config
-# -------------------------------
+# 2. Load Environment Variables
+load_dotenv()
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 with open("config.json") as f:
     cfg = json.load(f)
 
 # -------------------------------
-# 2. Setup Pinecone connection
+# 3. Setup Pinecone and Embeddings
 # -------------------------------
-load_dotenv()
-PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
-INDEX_NAME = os.getenv("INDEX_NAME")
-
-# Initialize embeddings
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-# Connect to Pinecone
-pc = Pinecone(api_key=PINECONE_API_KEY)
-index = pc.Index(INDEX_NAME)
+pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+index = pc.Index(os.getenv("INDEX_NAME"))
 
-# Connect existing index to LangChain
 docsearch = PineconeVectorStore(
     index=index,
     embedding=embeddings
 )
 
 # -------------------------------
-# 3. Setup Ollama model
+# 4. Setup Gemini LLM (CRITICAL FIX HERE)
 # -------------------------------
-llm = ChatOllama(model=cfg["model"], temperature=cfg["temperature"])
+llm = ChatGoogleGenerativeAI(
+    model="gemini-flash-lite-latest", 
+    google_api_key=GEMINI_API_KEY,
+    temperature=cfg.get("temperature", 0.7),
+    transport="rest", 
+    client_options=None 
+)
 
 # -------------------------------
-# 4. Build prompt
+# 5. Build prompt and Chain
 # -------------------------------
 prompt = PromptTemplate(
     template=cfg["prompt"],
     input_variables=["context", "question"]
 )
 
-# -------------------------------
-# 5. Create QA Chain
-# -------------------------------
 qa_chain = RetrievalQA.from_chain_type(
     llm=llm,
     retriever=docsearch.as_retriever(search_kwargs={"k": cfg["retriever_k"]}),
@@ -63,23 +61,25 @@ qa_chain = RetrievalQA.from_chain_type(
     chain_type_kwargs={"prompt": prompt}
 )
 
-# app = Flask(__name__) 
-# CORS(app)
-@medical_blueprint.route("/", methods=["POST"])
-# @app.route('/api/medical', methods=['POST'])
+# -------------------------------
+# 6. API Route
+# -------------------------------
+@medical_blueprint.route("", methods=["POST"])
 def medical_answer():
     try:
         data = request.get_json()
         question = data.get("question", "")
+        
         if not question:
             return jsonify({"error": "Question missing"}), 400
 
+        print(f"🔹 Processing medical question: {question}")
+        
+        # Execute chain using invoke
         result = qa_chain.invoke({"query": question})
+        
         return jsonify({"answer": result["result"]})
-    except Exception as e:
-        print("Error:", e)
-        return jsonify({"error": str(e)}), 500
 
-# if __name__ == "__main__":
-#     print("🚀 Python Medical AI server running on http://localhost:8000")
-#     app.run(host="0.0.0.0", port=8000)
+    except Exception as e:
+        print(f"❌ Error in medical route: {str(e)}")
+        return jsonify({"error": str(e)}), 500

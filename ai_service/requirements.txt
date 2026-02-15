@@ -1,0 +1,28 @@
+# Web Framework
+flask
+flask-cors
+python-dotenv
+
+# LangChain (Pinned for stability)
+langchain<1.0.0
+langchain-community<0.4.0
+langchain-core<1.0.0
+langchain-huggingface
+
+# Gemini AI
+langchain-google-genai
+google-generativeai
+google-api-python-client
+
+# Vector DB / Pinecone 
+# (CHANGED: 'pinecone-client' renamed to 'pinecone' to fix your specific error)
+pinecone
+langchain-pinecone
+faiss-cpu
+
+# Embeddings & PDF
+sentence-transformers
+pymupdf
+
+# YouTube
+youtube-transcript-api
