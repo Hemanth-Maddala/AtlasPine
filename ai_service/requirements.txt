@@ -26,3 +26,6 @@ pymupdf
 
 # YouTube
 youtube-transcript-api
+
+# to run
+gunicorn
