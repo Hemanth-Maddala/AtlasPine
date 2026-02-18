@@ -1,23 +1,53 @@
-# Web Framework
+# # Web Framework
+# flask
+# flask-cors
+# python-dotenv
+# gunicorn
+
+# # LangChain
+# langchain<1.0.0
+# langchain-community<0.4.0
+# langchain-core<1.0.0
+# langchain-google-genai
+# langchain-huggingface
+
+# # Vector DB
+# pinecone-client
+# faiss-cpu
+
+# # Embeddings & PDF
+# sentence-transformers
+# pymupdf
+
+# # YouTube
+# youtube-transcript-api
+
+
+# Use the CPU-only index for PyTorch to keep the build small (~200MB vs 5GB)
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Core Web Framework
 flask
 flask-cors
 python-dotenv
 gunicorn
 
-# LangChain
-langchain<1.0.0
-langchain-community<0.4.0
-langchain-core<1.0.0
+# Machine Learning Core (Explicit CPU versions)
+torch
+torchvision
+sentence-transformers
+
+# LangChain Ecosystem
+langchain>=0.3.0,<0.4.0
+langchain-community>=0.3.0,<0.4.0
+langchain-core>=0.3.0,<0.4.0
 langchain-google-genai
 langchain-huggingface
 
-# Vector DB
+# Vector Databases
 pinecone-client
 faiss-cpu
 
-# Embeddings & PDF
-sentence-transformers
+# Utilities & Data Loading
 pymupdf
-
-# YouTube
 youtube-transcript-api
