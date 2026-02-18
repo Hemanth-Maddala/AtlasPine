@@ -7,7 +7,8 @@ from flask import request, jsonify, Blueprint
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI 
-from langchain_pinecone import PineconeVectorStore
+# from langchain_pinecone import PineconeVectorStore
+from langchain_community.vectorstores import Pinecone
 from langchain_huggingface import HuggingFaceEmbeddings 
 from pinecone import Pinecone
 
@@ -29,10 +30,15 @@ embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 index = pc.Index(os.getenv("INDEX_NAME"))
 
-docsearch = PineconeVectorStore(
-    index=index,
+# docsearch = PineconeVectorStore(
+#     index=index,
+#     embedding=embeddings
+# )
+docsearch = Pinecone.from_existing_index(
+    index_name=os.getenv("INDEX_NAME"),
     embedding=embeddings
 )
+
 
 # -------------------------------
 # 4. Setup Gemini LLM (CRITICAL FIX HERE)
