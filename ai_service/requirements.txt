@@ -23,7 +23,6 @@
 # youtube-transcript-api
 
 
-# Use the CPU-only index for PyTorch to keep the build small (~200MB vs 5GB)
 --extra-index-url https://download.pytorch.org/whl/cpu
 
 # Core Web Framework
@@ -32,17 +31,18 @@ flask-cors
 python-dotenv
 gunicorn
 
-# Machine Learning Core (Explicit CPU versions)
+# Machine Learning Core
 torch
 torchvision
 sentence-transformers
 
 # LangChain Ecosystem
-langchain>=0.3.0,<0.4.0
-langchain-community>=0.3.0,<0.4.0
-langchain-core>=0.3.0,<0.4.0
+langchain>=0.3.0
+langchain-community>=0.3.0
+langchain-core>=0.3.0
 langchain-google-genai
 langchain-huggingface
+langchain-pinecone      <-- ADD THIS LINE
 
 # Vector Databases
 pinecone-client
