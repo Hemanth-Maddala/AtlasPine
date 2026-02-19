@@ -1,53 +1,18 @@
-# # Web Framework
-# flask
-# flask-cors
-# python-dotenv
-# gunicorn
-
-# # LangChain
-# langchain<1.0.0
-# langchain-community<0.4.0
-# langchain-core<1.0.0
-# langchain-google-genai
-# langchain-huggingface
-
-# # Vector DB
-# pinecone-client
-# faiss-cpu
-
-# # Embeddings & PDF
-# sentence-transformers
-# pymupdf
-
-# # YouTube
-# youtube-transcript-api
-
-
---extra-index-url https://download.pytorch.org/whl/cpu
-
-# Core Web Framework
 flask
 flask-cors
 python-dotenv
 gunicorn
 
-# Machine Learning Core
-torch
-torchvision
-sentence-transformers
-
-# LangChain Ecosystem
-langchain>=0.3.0
-langchain-community>=0.3.0
-langchain-core>=0.3.0
+langchain
+langchain-community
+langchain-core
 langchain-google-genai
 langchain-huggingface
-langchain-pinecone      <-- ADD THIS LINE
 
-# Vector Databases
 pinecone-client
+langchain-pinecone
 faiss-cpu
 
-# Utilities & Data Loading
+sentence-transformers
 pymupdf
 youtube-transcript-api
