@@ -1,18 +1,20 @@
-flask
-flask-cors
-python-dotenv
-gunicorn
+flask==3.1.2
+flask-cors==6.0.2
+python-dotenv==1.2.1
+gunicorn==25.1.0
 
-langchain
-langchain-community
-langchain-core
-langchain-google-genai
-langchain-huggingface
+# ---- LangChain (Stable 0.3 branch only) ----
+langchain==0.3.27
+langchain-core==0.3.83
+langchain-community==0.3.31
+langchain-google-genai==2.1.12
+langchain-huggingface==0.3.1
 
-pinecone-client
-langchain-pinecone
-faiss-cpu
+# ---- Vector DB / Embeddings ----
+pinecone-client==6.0.0
+faiss-cpu==1.13.2
+sentence-transformers==5.2.3
 
-sentence-transformers
-pymupdf
-youtube-transcript-api
+# ---- Utilities ----
+pymupdf==1.27.1
+youtube-transcript-api==1.2.4
