@@ -18,3 +18,5 @@ sentence-transformers==5.2.3
 # ---- Utilities ----
 pymupdf==1.27.1
 youtube-transcript-api==1.2.4
+
+python-3.10.13
