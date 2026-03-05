@@ -17,7 +17,11 @@ router.post('/', async (req, res) => {
     const response = await axios.post(
       `${AI_SERVICE}/api/summarize_video`,
       { video_url },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" },
+        timeout: 120000,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+    }
     );
     res.json(response.data);
   } catch (err) {   
