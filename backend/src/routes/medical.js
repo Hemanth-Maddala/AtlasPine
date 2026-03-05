@@ -8,7 +8,7 @@ router.use(authRequired);
 
 console.log("medical route loaded");
 
-const AI_SERVICE = process.env.AI_SERVICE_URL;
+AI_SERVICE="https://atlaspine.onrender.com"
 // -------------------- Medical question --------------------
 router.post('/', async (req, res) => {
   console.log("medical route loaded");

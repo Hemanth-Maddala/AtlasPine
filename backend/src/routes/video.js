@@ -5,7 +5,7 @@ const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 router.use(authRequired);
-const AI_SERVICE = process.env.AI_SERVICE_URL;
+AI_SERVICE="https://atlaspine.onrender.com"
 
 // -------------------- Video summarization --------------------
 router.post('/', async (req, res) => {

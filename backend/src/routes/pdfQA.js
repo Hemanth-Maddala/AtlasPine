@@ -10,7 +10,7 @@ const router = express.Router();
 router.use(authRequired);
 
 console.log("pdfQA.js loaded");
-const AI_SERVICE = process.env.AI_SERVICE_URL;
+AI_SERVICE="https://atlaspine.onrender.com"
 
 // Upload folder
 const uploadDir = path.join(__dirname, "../uploads");
