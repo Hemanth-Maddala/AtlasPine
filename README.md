@@ -60,3 +60,7 @@ https://atlas-pine.vercel.app/    => frontend in vercel
 https://atlaspine-backend.onrender.com     => backend in render
 1. VITE_API_URL = https://atlaspine-backend.onrender.com     => this is the environment variable given to vercel so in fetch in frontend we kept  "const API = import.meta.env.VITE_API_URL"  so fetch requests in frontend vercel will triggers VITE_API_URL in render 
 2. in VITE the environment variable should be start with "VITE"
+https://atlaspine.onrender.com    => ai_service in render
+1. During deploying make sure to use the same versions used in the project
+2. Using the Python version - 3.10.13
+3. This above link was used in the calling the ai_service from the Node-Backend

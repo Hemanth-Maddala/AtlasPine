@@ -8,7 +8,7 @@ router.use(authRequired);
 
 console.log("medical route loaded");
 
-AI_SERVICE="https://atlaspine.onrender.com"
+const AI_SERVICE="https://atlaspine.onrender.com"
 // -------------------- Medical question --------------------
 router.post('/', async (req, res) => {
   console.log("medical route loaded");
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     console.log("🔹 Received medical question:", question);
 
     const response = await axios.post(
-      `${AI_SERVICE}/api/medical`,
+    `${AI_SERVICE}/api/medical`,
       { question },
       { headers: { "Content-Type": "application/json" } }  // ✅ important
     );
