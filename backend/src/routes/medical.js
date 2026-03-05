@@ -8,7 +8,7 @@ router.use(authRequired);
 
 console.log("medical route loaded");
 
-
+const AI_SERVICE = process.env.AI_SERVICE_URL;
 // -------------------- Medical question --------------------
 router.post('/', async (req, res) => {
   console.log("medical route loaded");
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     console.log("🔹 Received medical question:", question);
 
     const response = await axios.post(
-      "http://127.0.0.1:8000/api/medical",
+      `${AI_SERVICE}/api/medical`,
       { question },
       { headers: { "Content-Type": "application/json" } }  // ✅ important
     );

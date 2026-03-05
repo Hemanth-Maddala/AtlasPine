@@ -10,6 +10,7 @@ const router = express.Router();
 router.use(authRequired);
 
 console.log("pdfQA.js loaded");
+const AI_SERVICE = process.env.AI_SERVICE_URL;
 
 // Upload folder
 const uploadDir = path.join(__dirname, "../uploads");
@@ -35,7 +36,7 @@ router.post("/summarize", upload.single("pdf"), async (req, res) => {
     const formData = new FormData();
     formData.append("pdf", fs.createReadStream(filePath));
 
-    const response = await axios.post("http://localhost:8000/api/pdf/summarize", formData, {
+    const response = await axios.post(`${AI_SERVICE}/api/pdf/summarize`, formData, {
       headers: formData.getHeaders(),
     });
 
@@ -57,7 +58,7 @@ router.post("/ask", async (req, res) => {
     console.log("Ask route accessed with question:", question);
     if (!question) return res.status(400).json({ error: "No question provided" });
 
-    const response = await axios.post("http://localhost:8000/api/pdf/ask", { question });
+    const response = await axios.post(`${AI_SERVICE}/api/pdf/ask`, { question });
     res.json(response.data);
   } catch (err) {
     console.error("Ask error:", err.message);

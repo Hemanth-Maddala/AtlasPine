@@ -5,6 +5,7 @@ const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 router.use(authRequired);
+const AI_SERVICE = process.env.AI_SERVICE_URL;
 
 // -------------------- Video summarization --------------------
 router.post('/', async (req, res) => {
@@ -14,7 +15,7 @@ router.post('/', async (req, res) => {
     const video_url = req.body.url;
     console.log("🔹 Received video URL:", video_url);
     const response = await axios.post(
-      "http://127.0.0.1:8000/api/summarize_video",
+      `${AI_SERVICE}/api/summarize_video`,
       { video_url },
       { headers: { "Content-Type": "application/json" } }
     );
