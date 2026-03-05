@@ -96,10 +96,10 @@ def summarize_youtube_video(video_url):
     try:
         print(f"🎬 Fetching transcript for: {video_id}")
         # CORRECT METHOD: Use the class directly
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
         
         # CORRECT ACCESS: transcript is a list of dicts, use entry['text']
-        transcript_text = " ".join(entry['text'] for entry in transcript)
+        transcript_text = " ".join(entry['text'] for entry in transcript)[:12000]
         print("✅ Transcript fetched successfully")
 
         template = (
